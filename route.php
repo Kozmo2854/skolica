@@ -46,6 +46,7 @@
                 case 'userCreate':
                     $valid = validateUserForm($_POST);
 
+
                     if (!$valid) {
 //                        global $message;
                         echo $valid;
@@ -56,11 +57,17 @@
                             echo "Korisnik je uspesno sacuvan";
                         }
                     }
+
+                    redirect($config['baseUrl'] . "userList");
                     break;
                 case 'userCreateForm':
                     include('userForm.phtml');
                     break;
+
                 case 'userUpdate':
+                updateUser();
+                
+                redirect($config['baseUrl'] . "userList");
 
 
                     break;
@@ -68,14 +75,24 @@
                     $user = getUserByEmail($_GET['email']);
                     include('userForm.phtml');
 
+
+
+
+                    break;
+                case 'userDelete' :
+                    deleteUser();
+                    redirect($config['baseUrl'] . "userList");
+
                     break;
                 case 'userLogout' :
                     logOut();
                     redirect($config['baseUrl']);
 
                     break;
+
                 case 'articleCreateForm' :
                     $categories= getCategory();
+                    $users = getUsers();
                     include('articleForm.phtml');
 
                     break;
@@ -87,6 +104,13 @@
 
                     }
                     break;
+
+                case 'articleDelete' :
+                $articleTitle = $_GET["title"];
+                deleteArticle();
+                redirect($config["baseUrl"] . "articleList");
+
+                break;
 
                 case 'articleUpdateForm' :
                     $categories= array();
@@ -111,6 +135,7 @@
                     $categories = array();
                     $categories = getCategory();
                     include 'categoryCreate.phtml';
+
                     break;
                 case 'categorySave' :
                     if (!saveCategoryForm($_POST)) {
@@ -122,6 +147,12 @@
                         include 'categoryCreate.phtml';
                     }
                     break;
+
+                case 'deleteCategory' :
+                deleteCategory();
+                redirect($config["baseUrl"] . "categoryCreateForm");
+
+                break;
                 default:
                     echo "Dobrodosli na nash blog";
                     break;

@@ -40,7 +40,14 @@
                 </div>
                 <div class="form-group text-center">
                     <label for="user">Author of article</label>
-                    <input type="text" name="user" class="form-control" placeholder="Enter username here" value="<?php if(isset($article->user)): echo $article->user; endif;?>">
+                    <select type="text" name="user" class="form-control">
+                        <?php if(isset($article->user)): echo "<option>" . $article->user . "</option>"; endif;?>">
+                        <?php
+                            foreach ($users as $user) {
+                                printf("<option value='%s'>%s</option>",$user->username,$user->username);
+                            }
+                        ?>
+                    </select>
                 </div>
                 <div class="form-group text-center">
                     <input type="submit" name="submit" value="<?php if (isset($article->title)): ?>Update Article<?php else: ?>Submit Article<?php endif; ?>">

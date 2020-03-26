@@ -45,6 +45,8 @@
                         <option value="0">Inactive</option>
                     </select>
                 </div>
+                <?php if(isset($user->email)): ?><input type="hidden" name="id" value="<?=$user->id?>"><?php else: ?><?php endif; ?>
+
 
 
                 <button type="submit" class="btn btn-primary" style="width: 100%;"><?php if (isset($user->email)):?>Update<?php else:?>Create<?php endif; ?></button>
@@ -52,6 +54,7 @@
         </div>
     </div>
 </div>
+
 
 
 

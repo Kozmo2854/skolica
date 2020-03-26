@@ -18,13 +18,14 @@
             <th>Username</th>
             <th>Image</th>
         </tr>
-        <?php foreach($users as $user): ?>
+        <?php foreach($users as $key => $value): ?>
             <tr>
-                <td><a href="index.php?route=userUpdateForm&email=<?=$user -> email?>"><?=$user -> email ?></a></td>
-                <td><?=$user -> firstName ?></td>
-                <td><?=$user -> lastName ?></td>
-                <td><?=$user -> username ?></td>
-                <td><img src="<?=$user -> image ?>" alt=""></td>
+                <td><a href="index.php?route=userUpdateForm&email=<?=$value -> email?>"><?=$value -> email ?></a></td>
+                <td><?=$value -> firstName ?></td>
+                <td><?=$value -> lastName ?></td>
+                <td><?=$value -> username ?></td>
+                <td><a href="index.php?route=userDelete&email=<?=$value -> email?>&userId=<?=$key?>">Delete User</a></td>
+                <td><img src="<?=$value -> image ?>" alt=""></td>
             </tr>
         <?php endforeach; ?>
 

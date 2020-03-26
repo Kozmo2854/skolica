@@ -49,7 +49,13 @@ function validateUserForm(array $params)
 
 function saveUser($params)
 {
+    $file = file_get_contents("storage.json");
+    $data = json_decode($file, true);
+
+    $lastItem = end($data);
+    $lastItemId = $lastItem["id"];
     $userData = [
+        "id" => ++$lastItemId,
         'email' => $params['email'],
         'password' => createPasswordHash($params['password']),
         'firstName' => $params['firstName'],
@@ -68,6 +74,43 @@ function saveUser($params)
 
     return file_put_contents('storage.json', json_encode($data));
 }
+
+function deleteUser() {
+    $data = file_get_contents('storage.json');
+    $dataArray = json_decode($data,true);
+    $arrIndex = array();
+    foreach($dataArray as $key => $value) {
+        if ($key == $_GET["userId"]) {
+        $arrIndex[] = $key;
+        }
+    }
+    foreach ($arrIndex as $i) {
+        unset($dataArray[$i]);
+    }
+    $dataArray = array_values($dataArray);
+    file_put_contents("storage.json", json_encode($dataArray));
+}
+
+function updateUser() {
+    $data = file_get_contents("storage.json");
+    $dataArray = json_decode($data,true);
+    foreach ($dataArray as $key =>$value) {
+     if ($value["id"] == $_POST["id"]) {
+         $dataArray[$key]["email"] = $_POST["email"];
+         $dataArray[$key]["username"] = $_POST["username"];
+         $dataArray[$key]["password"] = $_POST["password"];
+         $dataArray[$key]["firstName"] = $_POST["firstName"];
+         $dataArray[$key]["lastName"] = $_POST["lastName"];
+         $dataArray[$key]["status"] = $_POST["status"];
+
+     }
+    }
+    $dataArray = array_values($dataArray);
+    file_put_contents("storage.json", json_encode($dataArray));
+
+}
+
+
 
 function saveImage()
 {
@@ -142,6 +185,7 @@ function getUsers()
     return json_decode($users);
 }
 
+
 function isLoggedIn()
 {
     if (isset($_SESSION['isLoggedIn']) && $_SESSION['isLoggedIn'] === true) {
@@ -208,6 +252,23 @@ function getArticleByTitle($title)
     return false;
 }
 
+function deleteArticle() {
+    $data = file_get_contents('article.json');
+    $dataArray = json_decode($data,true);
+    $arrIndex = array();
+    foreach($dataArray as $key => $value) {
+        if ($key == $_GET["articleId"]) {
+        $arrIndex[] = $key;
+        }
+    }
+    foreach ($arrIndex as $i) {
+        unset($dataArray[$i]);
+    }
+    $dataArray = array_values($dataArray);
+    file_put_contents("article.json", json_encode($dataArray));
+
+}
+
 function getArticles()
 {
     $articles = file_get_contents('article.json');
@@ -229,6 +290,7 @@ function saveArticle($params)
         }
 
     }
+
     return file_put_contents('article.json', json_encode($articles));
 }
 
@@ -251,6 +313,31 @@ function getCategory()
 {
     $categories = file_get_contents('category.json');
     return json_decode($categories);
+}
+
+function getCategoryByName($name)
+{
+    foreach(getCategory() as $category) {
+        if ($name == $category->category) {
+            return $category;
+        }
+    }
+}
+
+function deleteCategory() {
+    $data = file_get_contents('category.json');
+    $dataArray = json_decode($data,true);
+    $arrIndex = array();
+    foreach($dataArray as $key => $value) {
+        if ($key == $_GET["categoryId"]) {
+        $arrIndex[] = $key;
+        }
+    }
+    foreach ($arrIndex as $i) {
+        unset($dataArray[$i]);
+    }
+    $dataArray = array_values($dataArray);
+    file_put_contents("category.json", json_encode($dataArray));
 }
 
 ?>

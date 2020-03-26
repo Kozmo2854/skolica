@@ -25,15 +25,23 @@
                 <tr>
                     <th>Category name</th>
                 </tr>
-                <?php foreach($categories as $category): ?>
+                <?php foreach($categories as $key => $value): ?>
                     <tr>
-                        <td><?=$category -> category ?></td>
+                        <td><?php echo $value->category;?></td>
+                        <td><a href="index.php?route=deleteCategory&category=<?=$value -> category?>&categoryId=<?=$key?>">Delete Category</a></td>
                     </tr>
                 <?php endforeach; ?>
 
 
             </table>
     </div>
+
+    <?php
+
+    
+
+
+    ?>
 
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
