@@ -1,10 +1,10 @@
 <?php
         function resolveRoute($config){
             global $message;
-
-            $route = 'userList';
-            if(isset($_GET['route']) && strlen($_GET['route']) > 0) {
-                $route = $_GET['route'];
+            if(!isset($_GET['route'])){
+               $route = 'home';
+            } else {
+               $route = $_GET['route'];
             }
 
             switch ($route) {
@@ -28,13 +28,13 @@
                     break;
 
                 case 'register':
-
+                    include('userForm.phtml');
                     break;
                 case 'userList':
-                    if (isset($_GET['message']) && $_GET['message'] === 'loggedIn') {
+                    if (isset($_GET['message']) && $_GET['message'] === 'logedIn') {
                         $message = 'Uspesno ste se ulogovali';
                     }
-                    $users = [];
+                    $users = array();
                     $emailFilter = null;
                     if (isset($_GET['emailFilter'])) {
                         array_push($users, getUserByEmail($_GET['emailFilter']));
@@ -43,44 +43,50 @@
                     }
                     include 'userList.phtml';
                     break;
+                case 'userCreateForm':
+                    include('userForm.phtml');
+                    break;
                 case 'userCreate':
+                    if(getUserByEmail($_POST['email']))
+                    {
+                        echo 'Postoji user sa istim emailom';
+                        break;
+                    }
                     $valid = validateUserForm($_POST);
-
                     if (!$valid) {
-//                        global $message;
-                        echo $valid;
+                        global $message;
+                        $message = $valid;
                     } else {
-                        if (!saveUser($_POST)) {
-                            echo 'Doslo je do greske prilikom snimanja korisnika';
+                        if (!createUser($_POST)) {
+                            $message = 'Doslo je do greske prilikom snimanja korisnika';
                         } else {
                             echo "Korisnik je uspesno sacuvan";
                         }
                     }
-                    break;
-                case 'userCreateForm':
-                    include('userForm.phtml');
-                    break;
-                case 'userUpdate':
-
-
                     break;
                 case 'userUpdateForm':
                     $user = getUserByEmail($_GET['email']);
                     include('userForm.phtml');
 
                     break;
+                case 'userUpdate':
+                    validateUserForm($_POST);
+                    updateUser($_POST);
+                    break;
+                
                 case 'userLogout' :
                     logOut();
                     redirect($config['baseUrl']);
 
                     break;
                 case 'articleCreateForm' :
+                    $categories= array();
                     $categories= getCategory();
                     include('articleForm.phtml');
 
                     break;
                 case 'articleCreate' :
-                    if (!saveArticleForm($_POST)) {
+                    if (!createArticle($_POST)) {
                         $message = 'Doslo je do greske prilikom snimanja clanka';
                     } else {
                         echo "Clanak uspesno sacuvan";
@@ -95,13 +101,13 @@
                     include 'articleForm.phtml';
                     break;
                 case 'articleUpdate' :
-                        saveArticle($_POST);
+                        updateArticle($_POST);
                     break;
                 case 'articleList' :
                     $articles = array();
                     $articleFilter = null;
                     if (isset($_GET['articleFilter'])) {
-                        array_push($articles, getArticleByTitle($_GET['articleFilter']));
+                        array_push($article, getArticleByTitle($_GET['articleFilter']));
                     } else {
                         $articles = getArticles();
                     }
@@ -122,9 +128,16 @@
                         include 'categoryCreate.phtml';
                     }
                     break;
+                case 'deleteUser' :
+                    deleteSomething($_POST['email'],'email','storage.json');
+                break;
+                case 'deleteArticle':
+                    deleteSomething($_POST['title'],'title','article.json');
                 default:
-                    echo "Dobrodosli na nash blog";
+                    echo "default";
                     break;
             }
+
+
      }
  ?>

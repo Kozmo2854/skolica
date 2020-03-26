@@ -1,8 +1,14 @@
 <?php
-
+     
      $message = '';
      include('route.php');
      include('functions.php');
+
+
+     // echo md5('12341234');
+     // die();
+
+
      $config = include ('config.php') ;
      bootstrap();
      include ('header.phtml') ;

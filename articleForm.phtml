@@ -40,10 +40,19 @@
                 </div>
                 <div class="form-group text-center">
                     <label for="user">Author of article</label>
-                    <input type="text" name="user" class="form-control" placeholder="Enter username here" value="<?php if(isset($article->user)): echo $article->user; endif;?>">
+                    <!-- <input type="text" name="user" class="form-control" placeholder="Enter username here" value="<?php// if(isset($article->user)): echo $article->user; endif;?>"> -->
+                    <select name="user">
+                            <?php
+                                $users = json_decode(file_get_contents('storage.json',true));
+                                foreach ($users as $user) {
+                                    echo '<option value="' . $user->username . '">' . $user->username; 
+                                }
+                            ?>
+                    </select>
                 </div>
                 <div class="form-group text-center">
-                    <input type="submit" name="submit" value="<?php if (isset($article->title)): ?>Update Article<?php else: ?>Submit Article<?php endif; ?>">
+                    <input type="submit" value="<?php if (isset($article->title)): ?>Update Article<?php else: ?>Submit Article<?php endif; ?>">
+                    <button type="submit" class="btn btn-danger" style="width: 100%;" formaction="index.php?route=deleteArticle">Delete category</button>
                 </div>
 
             </form>

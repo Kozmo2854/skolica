@@ -14,7 +14,7 @@
 <div class="container">
     <div class="row align-items-center justify-content-center">
         <div class="col-sm-6">
-            <form enctype="multipart/form-data" action="index.php?route=<?php if (!isset($user->email)): ?>userCreate<?php else: ?>userUpdate<?php endif; ?> " method="post">
+            <form enctype="multipart/form-data" action="index.php?route=<?php if (!(isset($user->email))): ?>userCreate<?php else: ?>userUpdate<?php endif; ?> " method="post">
                     <h5><?php if(isset($user->email)): ?>Update profile<?php else: ?>Create new profile<?php endif; ?>  </h5>
                 <div class="form-group">
                     <div class="form-group">
@@ -48,6 +48,7 @@
 
 
                 <button type="submit" class="btn btn-primary" style="width: 100%;"><?php if (isset($user->email)):?>Update<?php else:?>Create<?php endif; ?></button>
+                <button type="submit" class="btn btn-danger" style="width: 100%;" formaction="index.php?route=deleteUser">Delete user</button>
             </form>
         </div>
     </div>
