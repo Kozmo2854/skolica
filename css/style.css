@@ -1,0 +1,10 @@
+body {
+    background-color: #d2d2d2;
+}
+.resizedForm {
+    width: 400px;
+}
+.resizedTextArea {
+    min-height: 300px;
+    min-width: 370px;
+}
