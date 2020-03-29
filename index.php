@@ -16,7 +16,7 @@
      try {
           resolveRoute($config);
      } catch (\Exception $e) {
-
+          
      }
 
 
